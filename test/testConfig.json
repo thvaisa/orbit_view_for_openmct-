@@ -1,0 +1,13 @@
+{
+    "url" : "praa",
+    "trackables" : [
+      {
+          "name": "seee",
+          "alas" : "asd"
+      },
+      {
+        "name": "Kela",
+        "icon": "./icons/fs.png"
+      }
+    ]
+}

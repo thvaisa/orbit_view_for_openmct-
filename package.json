@@ -1,0 +1,40 @@
+{
+  "name": "orbit-viewer",
+  "version": "0.5.0",
+  "description": "Orbit Viewer for OpenMCT framework",
+  "license:" : "private",
+  "author": "Aalto Satellites",
+  "main": "server.js",
+
+  "engines": {
+    "node": "12.x"
+  },
+
+  "scripts": {
+    "start": "node server.js",
+    "build": "browserify orbitViewer.js --standalone orbitViewer > build/orbitViewer.js",
+    "test": "mocha"
+  },
+
+  "dependencies": {
+    "leaflet": "^1.0.3",
+    "tle.js": "^4.0.12",
+    "moment": ""
+  },
+
+  "devDependencies": {
+    "coffeescript": "^2.5.1",
+    "express": "^4.14.1",
+    "express-basic-auth": "",
+    "openmct": "https://github.com/nasa/openmct.git",
+    "angularcontext": "",
+    "benv": "^3.3.0",
+    "caching-coffeeify": "^0.5.1",
+    "coffeeify": "^3.0.1",
+    "jsdom": "11.0.0",
+    "mocha-jsdom": "~1.1.0",
+    "jsdom-global": "3.0.2",
+    "minifyify": "^7.3.5",
+    "mocha": "^8.0.1"
+  }
+}

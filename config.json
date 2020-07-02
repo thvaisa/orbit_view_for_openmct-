@@ -1,0 +1,33 @@
+{
+
+    "url" : "wss://test123openmct.herokuapp.com/",
+
+    "trackables" : {
+      "Aalto-1" : {
+          "icon": "./icons/fs.png",
+          "pathColor" : "green"
+      },
+      "Foresail-1" : {
+        "icon": "./icons/fs.png",
+        "pathColor" : "blue"
+      }
+    },
+
+    "map" : {
+      "mapTiles" : "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+      "attribution" : "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL."
+    },
+
+    "groundStation" : {
+      "icon" : "./icons/gs.png",
+      "position" : [60.32452, 24.968544],
+      "elevation" : 0,
+      "visibility" : 0
+    },
+
+    "timings" : {
+        "TLEUpdateInterval" : 3600000,
+        "updateMarkersInterval" : 2000
+    }
+
+}

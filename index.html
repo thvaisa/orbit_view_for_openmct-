@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open MCT Foresail</title>
+    <script src="/dist/openmct.js"></script>
+    <script type="module" src="build/orbitViewer.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+</head>
+<body>
+    <script type="module">
+
+        const FIVE_MINUTES = 5 * 60 * 1000;
+        const THIRTY_MINUTES = 30 * 60 * 1000;
+
+        openmct.setAssetPath('/dist');
+
+        openmct.install(openmct.plugins.LocalStorage());
+        openmct.install(openmct.plugins.MyItems());
+        openmct.install(openmct.plugins.UTCTimeSystem());
+        openmct.install(openmct.plugins.LADTable());
+        openmct.install(openmct.plugins.SummaryWidget());
+        openmct.install(openmct.plugins.Espresso());
+
+        openmct.install(openmct.plugins.DisplayLayout({
+            showAsView: ['summary-widget']
+        }));
+        openmct.install(openmct.plugins.AutoflowView({
+            type: "telemetry.panel"
+        }));
+
+        openmct.install(openmct.plugins.Conductor({
+            menuOptions: [
+                {
+                    name: "Fixed",
+                    timeSystem: 'utc',
+                    bounds: {
+                        start: Date.now() - THIRTY_MINUTES,
+                        end: Date.now()
+                    }
+                },
+                {
+                    name: "Realtime",
+                    timeSystem: 'utc',
+                    clock: 'local',
+                    clockOffsets: {
+                        start: - THIRTY_MINUTES,
+                        end: FIVE_MINUTES
+                    }
+                }
+            ]
+        }));
+
+
+        openmct.time.clock('local', {start: -15 * 60 * 1000, end: 0});
+        openmct.time.timeSystem('utc');
+
+        openmct.install(orbitViewer.OrbitViewerPlugin());
+        openmct.start();
+
+    </script>
+</body>
+</html>
