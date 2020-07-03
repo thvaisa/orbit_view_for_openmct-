@@ -1,7 +1,6 @@
 //Responsible for displaying the markers. Also creates icon for groundstation
 //Markers that are created has to be added separately to the leaflet map,
 //hence some getters
-});
 class MarkerDrawer{
 
     //create markers for the tracked objects
