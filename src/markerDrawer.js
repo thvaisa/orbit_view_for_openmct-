@@ -1,4 +1,10 @@
+//Responsible for displaying the markers. Also creates icon for groundstation
+//Markers that are created has to be added separately to the leaflet map,
+//hence some getters
+});
 class MarkerDrawer{
+
+    //create markers for the tracked objects
 		constructor(trackedObjects){
 				this.trackedObjects = trackedObjects;
 				this.markers = {};
@@ -23,6 +29,7 @@ class MarkerDrawer{
 				}.bind(this));
 		}
 
+    //Create marker for the ground station
     static createGroundStation(config){
 
     				// Groundstation marker
@@ -39,11 +46,12 @@ class MarkerDrawer{
 
     }
 
+    //return markers to be added to the map
 		getDrawableObjects(){
  				return Object.keys(this.markers).map(function(key){return this.markers[key]}.bind(this));
 		}
 
-
+    //Update location
 		updateMe(){
 				this.trackedObjects.map(function(obj){
 						this.markers[obj.name].setLatLng(obj.pos);

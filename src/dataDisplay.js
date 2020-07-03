@@ -1,3 +1,5 @@
+//This module displays the position of the tracked object and also
+//where the object is visible from the groun station
 class DataDisplay{
 		constructor(trackedObjects, document, container){
 				this.trackedObjects = trackedObjects;
@@ -7,6 +9,8 @@ class DataDisplay{
 				this.tableCreate(trackedObjects, this.rows, document, container);
 		}
 
+
+		//Create rows, see [let rows = [...]] for column values
 		createRow(row){
 
 				function createRow0(row,name){
@@ -19,6 +23,7 @@ class DataDisplay{
 				rows.map(function(name){createRow0(row,name)});
 		}
 
+		//Create entire table
 		tableCreate(trackedObjects, rows, document, container){
 		    var tbl  = document.createElement('table');
 		    tbl.style.width  = '100px';
@@ -36,12 +41,12 @@ class DataDisplay{
 		    container.appendChild(tbl);
 		}
 
+		//update values in the table
 		updateMe(e){
 
 				function setValue(row, key, value){
 						row[key].innerHTML = value;
 				}
-
 
 				this.trackedObjects.forEach(function(obj){
 						let row = this.rows[obj.name];

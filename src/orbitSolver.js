@@ -9,6 +9,8 @@ function tle2PostFix(tle2){
 
 
 //Something wrong? Orbits are not ordered
+//There was something wrong with the TLE.js function. It
+//was not consistent and gave sometimes wrong orbits
 function computeGroundTracks_old(tle, timestamp){
    return tlejs.getGroundTracks({
         tle: tle,
@@ -20,6 +22,7 @@ function computeGroundTracks_old(tle, timestamp){
     });
 }
 
+//Iterate
 function computeGroundTracks(tle, timestamp){
    return new Promise(function(resolve, reject) {
        let orbits = [];
@@ -67,6 +70,7 @@ function toDeg(rad){
 
 //from gui_tracker
 //maybe change to generator?
+//This is implementation from the original mcc system
 function footprint(lat,lng, elevation){
     let m = 0;
     let r0 = 6378.137;
@@ -164,59 +168,69 @@ class Trackable{
         this.tle = [name, tle1, tle2PostFix(tle2)];
     }
 
-
+    //Calculate passes
     getNextAOS(nextN, observer, timestampStart){
 
-        let markers = [];
-
+        let elevationHistory = [];
+        //elevation at time timestampStart
         let startElevation =  getPositionAndExtraAt(this.tle, observer, timestampStart).elevation-observer.visibility;
 
         let startTime = timestampStart;
         let aboveHorizon = false;
 
+        //Check whether we are above or below horizon
         let peak = -1;
         if(startElevation>0){
-            markers.push({start: timestampStart});
+            elevationHistory.push({start: timestampStart});
             peak = startElevation;
             aboveHorizon = true;
         }
         let indx = 0;
 
         let prevElevation = startElevation;
+        //Check orbits each minute within 24 hour timeframe
         for (let i = 1; i < 60*24; i++) {
 
             let timestamp_next = timestampStart+i*1000*60;
             let timestamp_prev = timestampStart+(i-1)*1000*60;
 
+            //elevation of the next iteration
             let elevation = getPositionAndExtraAt(this.tle, observer, timestamp_next).elevation-observer.visibility;
+            //check if we need to update elevation
             if(peak<elevation){
                 peak = elevation;
             }
+            //If sign is different, we know that the satellite crossed the horizon
             if(Math.sign(prevElevation)!=Math.sign(elevation)){
+                //Compute more accurate time using binary search
                 let passHorizon = iterate(timestamp_prev, timestamp_next, prevElevation, elevation, this.tle, observer);
+                //Satellite is above the horizon
                 if(aboveHorizon){
-                    markers[indx]["end"] = passHorizon[0];
-                    markers[indx]["peak"] = peak+observer.visibility;
+                    elevationHistory[indx]["end"] = passHorizon[0];
+                    elevationHistory[indx]["peak"] = peak+observer.visibility;
                     aboveHorizon = false;
                     indx = indx+1;
                     peak = -1;
                     if(indx>=nextN){
-                        return markers;
+                        return elevationHistory;
                     }
+                //below horizon
                 }else{
                     aboveHorizon = true;
-                    markers.push({start : passHorizon[0]});
+                    elevationHistory.push({start : passHorizon[0]});
                 }
 
             }
+            //store the previous elevation value
             prevElevation = elevation;
         }
-        return markers;
+        //return
+        return elevationHistory;
     }
 
 }
 
-
+//binary search to find the more accurate timing of the crossing of the horizon
 function iterate(prevTime, nextTime, prevElev, nextElev, tle, observer){
     let start = prevTime;
     let end = nextTime;

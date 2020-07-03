@@ -1,5 +1,6 @@
 const orbits = require('./orbitSolver.js');
 
+//Display orbits and visible area
 class LineDrawer{
 
 		constructor(trackedObjects, map){
@@ -15,12 +16,14 @@ class LineDrawer{
 
 		}
 
+    //check if the orbits need to redrawn (lat and pos difference is 10 degress)
 		orbitsNeedUpdating(pos, lastPos){
 				if(lastPos == null) return true;
 				return (Math.abs(pos.lng-lastPos.lng)>10)
 										|| (Math.abs(pos.lat-lastPos.lat)>10);
 		}
 
+    //Update orbits and coverages
 		updateMe(e){
 				this.trackedObjects.forEach(function(obj){
 						this.drawCoverage(obj.name, obj.coverage, this.map);
@@ -34,10 +37,12 @@ class LineDrawer{
 				}.bind(this));
 		};
 
+    //Create leaflet path
 		createPath(color, map){
 				return L.polyline([], { color: color }).addTo(map);
 		}
 
+    //Draw orbit
 		drawOrbit(name, msg, color, map){
 				this.paths[name] = this.paths[name].map(function(row){
 						if(row!=undefined) row.remove();
@@ -50,6 +55,7 @@ class LineDrawer{
 
 		}
 
+    //Add data to map
 		mapPath(data, path){
 				data.map(function(row) {
 					  path.addLatLng([row[1],row[0]]);
@@ -76,9 +82,6 @@ class LineDrawer{
 						}
 						this.coverage[name][to].addLatLng([values[i][1],values[i][0]]);
 				}
-
-				//path.addLatLng([values[values.length-1][1],
-				//								values[values.length-1][0]]);
 
 		}
 }
