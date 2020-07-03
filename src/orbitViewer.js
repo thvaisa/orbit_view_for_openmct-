@@ -21,6 +21,8 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
     return function install (openmct) {
 
         //Add provider for the data
+        //TODO: Maybe put the functionality somewhere else?
+        //Then websocket would also need to be somewhere else
         openmct.telemetry.addProvider({
             request: function(domainObject, options) {
                 console.log("request");
@@ -44,22 +46,29 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
                     });
                 })
             },
-
+            //We tell openmct that we support request
+            //Maybe not needed in our implmentation
             supportsRequest: function (domainObject, options) {
                 return true;
             },
+            //Tell openmct that subscription are supported
             supportsSubscribe: function (domainObject, callback, options) {
                 return false;
             },
+            //you should get the point. No Metadata
             supportsMetadata: function (domainObject, options) {
                 return false;
             },
+            //No limits for openmct
             supportsLimits: function(domainObject) {
                 return false;
             },
         });
 
 
+        //with form we are able to create persistent data
+        //to the domainObject into which we can store which Satellites
+        //are tracked
         openmct.types.addType(telemetryType, {
             creatable: true,
             name: "OrbitViewer",
@@ -79,6 +88,8 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
         });
 
 
+
+        //Here we create the view, make some functions the view can use
     		openmct.objectViews.addProvider({
             name: 'OSM Map',
             key: 'tracking',
@@ -91,7 +102,7 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
                 if(!MapView.validURL(config.url)) return;
                 wsWrapper.connect(config.url);
 
-
+                //Define how view can access openmct's clock
                 let getTime = function(current=false){
                     return openmct.time.boundsVal.end;
                 }
@@ -101,8 +112,6 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
                 		return openmct.telemetry.request(domainObject);
               	}.bind(null, domainObject);
 
-
-                console.log(openmct);
             	  return new MapView.MapView(domainObject, config, getTime, TLEUpdateLoop, document, openmct);
             }
     		});

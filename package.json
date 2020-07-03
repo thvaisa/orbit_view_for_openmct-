@@ -11,8 +11,8 @@
   },
 
   "scripts": {
-    "start": "node server.js",
-    "build": "browserify orbitViewer.js --standalone orbitViewer > build/orbitViewer.js",
+    "start": "node src/server.js",
+    "build": "browserify src/orbitViewer.js --standalone orbitViewer > build/orbitViewer.js",
     "test": "mocha"
   },
 

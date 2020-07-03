@@ -1,19 +1,22 @@
 /*
- * Simple static webserver to host Open MCT (localhost:8080 or port described in 
- * process.env.PORT (for heroku))
+ * Simple static webserver to host Open MCT
  */
 
 var express = require('express');
 var app = express();
 const basicAuth = require('express-basic-auth')
 
-//simple authentication for testing environment
+/*
 app.use(basicAuth({
     users: { 'xxx': 'xxx' },
     challenge: true
 }))
+*/
 
-app.use('/', express.static(__dirname + '/'));
+app.use('/', express.static(__dirname + '/../'));
+
+
+
 
 var port = process.env.PORT || 8080
 

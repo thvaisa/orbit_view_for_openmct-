@@ -18,7 +18,7 @@ class WebsocketWrapper{
 
 
     setListeners(socket){
-        console.log(socket);
+
         if(socket == null){
             console.error("Socket not connected");
             return;

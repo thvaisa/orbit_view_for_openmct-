@@ -27,7 +27,7 @@
 
     "timings" : {
         "TLEUpdateInterval" : 3600000,
-        "updateMarkersInterval" : 2000
+        "updateInterval" : 2000
     }
 
 }
