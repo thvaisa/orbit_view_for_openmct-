@@ -22,7 +22,7 @@ function computeGroundTracks_old(tle, timestamp){
     });
 }
 
-//Iterate
+//Create orbit with iteration
 function computeGroundTracks(tle, timestamp){
    return new Promise(function(resolve, reject) {
        let orbits = [];
@@ -116,7 +116,7 @@ function footprint(lat,lng, elevation){
 }
 
 
-
+//Stores ground station's values
 class Observer{
     constructor(config){
         this.latitude = config.position[0];
@@ -127,8 +127,7 @@ class Observer{
 }
 
 
-
-
+//Trackables
 class Trackable{
     constructor(name, config){
         this.name = name;
@@ -230,7 +229,7 @@ class Trackable{
 
 }
 
-//binary search to find the more accurate timing of the crossing of the horizon
+//binary search to find the more accurate timing of when the horizon is crossed
 function iterate(prevTime, nextTime, prevElev, nextElev, tle, observer){
     let start = prevTime;
     let end = nextTime;

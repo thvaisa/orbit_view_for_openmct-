@@ -1,8 +1,7 @@
 ## Satellite orbit viewer for  OpenMCT.
 
-Work in progress... No proof reading...  
 
-This is a plugin for the OpenMCT framework that can be used to track satellite orbits and their upcoming passes (*acquisition of signal* (AOS), *loss of signal* (LOS) and *peak elevation*) by using TLEs. The computations are carried out by the TLE.js+satellite.js, and the orbits are visualized with the leaflet. The user is expected to have source (e.g., remote server) from which the TLEs can be requested.    
+This is a plugin for the OpenMCT framework that can be used to track satellite orbits and their upcoming passes (*acquisition of signal* (AOS), *loss of signal* (LOS), and *peak elevation*) by using TLEs. The computations are carried out by the TLE.js+satellite.js, and the orbits are visualized with the leaflet. The user is expected to have a source (e.g., remote server) from which the TLEs can be requested.
 
 ### Package used:
 
@@ -23,15 +22,17 @@ npm run build
 
 #### How to use
 
-This instruction applies to the current version that has no package in the npm registry. 
 
-First you will need to have working OpenMCT: https://github.com/nasa/openmct after of which you can use the plugin by adding line to the index.html (see) header 
+This instruction applies to the current version that has no package in the npm registry.
+
+First, you will need to have working OpenMCT: https://github.com/nasa/openmct after of which you can use the plugin by adding following lines to your index.html header
+
 
 ```html
 <script type="module" src="PATH_TO/orbitViewer.js"></script>
 ```
 
- and 
+ and
 
 ```javascript
 openmct.install(orbitViewer.OrbitViewerPlugin());
@@ -55,9 +56,9 @@ If the requested TLE's are received, the screen with a following view will open.
 
   ![Screenshot_20200702_223120](./doc/Screenshot_20200702_223120.png)
 
-The view visualizes the orbits, satellites, visibility area, and the ground station. On the right, information about next five upcoming passes of each satellite are printed and also some current information about the satellites. 
+  The view visualizes the orbits, satellites, visibility area, and the ground station. On the right, information about the next five upcoming passes of each satellite are displayed and also some current information about the satellites.
 
-The view interacts with the OpenMCT's time conductors, which can be used to control the time (Local clock and Fixed Timespan mode). It is important to know that TLEs are only accurate at a time so don't expect good accuracy if applied beyond one day.  It is also good to know that the time conductor might have +5 min offset, which will be applied to the orbit simulation
+  The view interacts with the OpenMCT's time conductors, which can be used to control the time (Local clock and Fixed Timespan mode). It is important to know that TLEs are only accurate at a time, so don't expect good accuracy if applied beyond one day.  It is also good to know that the time conductor might have a +5 min offset, which will be applied to the orbit simulation.
 
 ![Screenshot_20200702_224936](./doc/Screenshot_20200702_224936.png)
 
@@ -66,12 +67,12 @@ The view interacts with the OpenMCT's time conductors, which can be used to cont
 - View orbits of the multiple satellites
 - Display passes of the multiple satellites
 - Display orbits at the given time (requires time conductor)
-- Easy to deploy to Heroku with containers 
+- Easy to deploy to Heroku with containers
 - F5 required if can not connect to the TLE server
 
 #### How it is structured:
 
-The plugin can be configured during installation by passing a dictionary to the plugin's constructor. 
+The plugin can be configured during installation by passing a dictionary to the plugin's constructor.
 
 ```javascript
 openmct.install(orbitViewer.OrbitViewerPlugin({
@@ -79,7 +80,7 @@ openmct.install(orbitViewer.OrbitViewerPlugin({
                                          	}));
 ```
 
-These values will overwrite the values from the **config.json** 
+These values will overwrite the values from the **config.json**
 
 **config.json**
 
@@ -116,7 +117,7 @@ These values will overwrite the values from the **config.json**
       "visibility" : 0
     },
 
-	
+
     "timings" : {
     	//How often in milliseconds the TLE's are updated
         "TLEUpdateInterval" : 3600000,
@@ -139,7 +140,7 @@ openmct.install(orbitViewer.OrbitViewerPlugin({
 
 ```javascript
 connect(url)				//Connects to url and adds listeners
-sendMessage(url, message)	//Sends messages to the url and returns promise 
+sendMessage(url, message)	//Sends messages to the url and returns promise
 							//that after a resolve will contain the message from 								//the server
 ```
 
@@ -154,7 +155,7 @@ message = {"exchange" : "tracking",
 **response from the server**
 
 ```json
-result : { 
+result : {
 	trackables :[{
 		name : "NAME",
         tle1 : "TLE 1st row",
@@ -163,15 +164,15 @@ result : {
 }
 ```
 
-The message structure might seem overly complicated, but the messages were designed to work with another plugin that will be released later. 
+The message structure might seem overly complicated, but the messages were designed to work with another plugin that will be released later.
 
 **Code structure**
 
--orbitViewer.js || Some OpenMCT structures. 
+-orbitViewer.js || Some OpenMCT structures.
 
 - websocketWrapper.js || Wrapper for the socket handler
 - LeafletMapView.js  || Contains draw calls and update loops. This is a mess currently, refactoring scheduled soon. CSS styling should be separated
-  - orbitSolver || Data and logics. 
+  - orbitSolver || Data and logics.
 
 -server.js || Simple webserver for testing
 
@@ -188,7 +189,7 @@ npm run build; npm start
 
 #### ToDo:
 
-- Need CSS wizard to fix the look of the view 
+- Need CSS wizard to fix the look of the view
 - Collision warning
 - Test what happens in a case of geostationary orbits
 - Test phones
