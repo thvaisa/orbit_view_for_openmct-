@@ -79,10 +79,10 @@ class AOSDataDisplay{
 						//Update each trackedObject
 						this.trackedObjects.forEach(function(obj){
 									//Find passes
-									this.AOS[obj.name] = obj.getNextAOS(NNextPasses, this.observer, e.detail.timestamp);
+									this.AOS[obj.name] = obj.getNextAOS(this.NNextPasses, this.observer, e.detail.timestamp);
 
 									//Update values
-									for(let i=0; i<NNextPasses; ++i){
+									for(let i=0; i<this.NNextPasses; ++i){
 											this.rows[obj.name]["data"][i]["AOS"].innerHTML = moment(this.AOS[obj.name][i].start).format("HH:MM:SS");
 											this.rows[obj.name]["data"][i]["LOS"].innerHTML = moment(this.AOS[obj.name][i].end).format("HH:MM:SS");
 											this.rows[obj.name]["data"][i]["duration"].innerHTML = convertToReadableFormat(this.AOS[obj.name][i].start, this.AOS[obj.name][i].end);
@@ -100,7 +100,7 @@ class AOSDataDisplay{
 				//These values need to be update every "tick" because it shows ETA to
 				//of the next pass
 				this.trackedObjects.forEach(function(obj){
-						for(let i=0; i<5; ++i){
+						for(let i=0; i<this.NNextPasses; ++i){
 								this.rows[obj.name]["data"][i]["AOS in"].innerHTML = convertToReadableFormat(e.detail.timestamp,this.AOS[obj.name][i].start)+String.fromCharCode(176);
 						}
 				}.bind(this));
