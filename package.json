@@ -13,7 +13,7 @@
   "scripts": {
     "install": "npm run build",
     "start": "node src/server.js",
-    "build": "browserify src/orbitViewer.js --standalone orbitViewer > build/orbitViewer.js",
+    "build": "browserify src/orbitViewer.js --standalone orbitViewer > dist/orbitViewer.js",
     "test": "mocha"
   },
 
