@@ -49,7 +49,7 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
             //We tell openmct that we support request
             //Maybe not needed in our implmentation
             supportsRequest: function (domainObject, options) {
-                return true;
+                return domainObject.type === telemetryType;;
             },
             //Tell openmct that subscription are supported
             supportsSubscribe: function (domainObject, callback, options) {
@@ -90,7 +90,7 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
 
 
         //Here we create the view, make some functions the view can use
-    		openmct.objectViews.addProvider({
+    	openmct.objectViews.addProvider({
             name: 'OSM Map',
             key: 'tracking',
             cssClass: 'icon-clock',
