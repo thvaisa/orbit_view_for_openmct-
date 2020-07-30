@@ -112,7 +112,8 @@ function OrbitViewerPlugin(options = {}, wsWrapperIn = new WebsocketWrapper()) {
                 		return openmct.telemetry.request(domainObject);
               	}.bind(null, domainObject);
 
-            	  return new MapView.MapView(domainObject, config, getTime, TLEUpdateLoop, document, openmct);
+            	  return new MapView.MapView(domainObject, config, getTime,
+                                            TLEUpdateLoop, document, openmct);
             }
     		});
     }

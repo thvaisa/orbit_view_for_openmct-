@@ -53,10 +53,9 @@ class WebsocketWrapper{
 
             //response
             if ("id" in message) {
-                console.log("Fulfill");
+                // console.log("Fulfill");
                 // Fulfill the promise
                 if (message.id in this.rpc_calls){
-                    console.log("Fulfill");
                     this.rpc_calls[message.id].promise(message);
                 }
             }

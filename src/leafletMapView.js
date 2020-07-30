@@ -63,7 +63,7 @@ function MapView(domainObject, config,  getTime, TLEUpdateLoop, document, openmc
 		//Store observer(ground station) data
 		this.observer = new orbits.Observer(this.config.groundStation);
 
-
+		this.cached_timeouts = [];
 }
 
 //What is shown
@@ -100,8 +100,11 @@ MapView.prototype.show = function(container) {
 			this.rightPanel.appendChild(this.AOSdisplayPanel);
 			this.rightPanel.appendChild(this.dataDisplayPanel);
 
-			this.dataDisplay = new DataDisplay(this.domainObject.trackedObjects, this.document, this.dataDisplayPanel);
-			this.AOSdisplay = new AOSDataDisplay(this.domainObject.trackedObjects, this.observer, this.document, this.AOSdisplayPanel);
+			this.dataDisplay = new DataDisplay(this.domainObject.trackedObjects,
+																				this.document, this.dataDisplayPanel);
+			this.AOSdisplay = new AOSDataDisplay(this.domainObject.trackedObjects,
+																				this.observer, this.document,
+																				this.AOSdisplayPanel);
 
 			//Create map and
 			this.map = new L.Map(this.elemMapView, {
@@ -171,7 +174,7 @@ MapView.prototype.show = function(container) {
 			//paneClass.zIndex = "40"; //Important z-indexin (draw order).
 
 			//resize map properly
-			setTimeout(function(){ this.map.invalidateSize()}.bind(this), 1000);
+			this.cached_timeouts.push(setTimeout(function(){ this.map.invalidateSize()}.bind(this), 1000));
 			//setInterval(function(){ this.map.invalidateSize()}.bind(this), 1000);
 
 			//Update map when screen is resized.
@@ -223,7 +226,9 @@ function updateFunction(domainObject,	map, getTime, tmpData, elem, observer, red
 
 		//Allow update if every trackedobject has TLE
 		if(sendUpdateMessage){
-				var event = new CustomEvent('updateAll', {detail : {timestamp : timestamp, redraw : redraw}});
+				var event = new CustomEvent('updateAll', {detail : {
+																											timestamp : timestamp,
+																											redraw : redraw}});
 				elem.dispatchEvent(event);
 		}else{
 				console.warn("TLE data not set, trying again soon");
@@ -234,6 +239,12 @@ function updateFunction(domainObject,	map, getTime, tmpData, elem, observer, red
 
 
 MapView.prototype.destroy = function() {
+
+			this.cached_timeouts.map(function(func){
+					clearTimeout(func);
+				});
+
+
 		this.openmct.time.off('bounds', this.updateMarks);
 
 		this.funcRegistry.map(function(func){
