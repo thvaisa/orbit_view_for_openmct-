@@ -185,7 +185,9 @@ npm install     //Only once
 npm run build; npm start
 ```
 
+#### Notes:
 
+The plugin does not support "fixed timespan" mode. Use "Local Clock" always.
 
 #### ToDo:
 
